@@ -2,11 +2,13 @@
 import threading
 from unittest.mock import MagicMock, patch, Mock
 
+# --- Third-party imports ---
 import firebase_admin
 import pytest
 from google.cloud.firestore_v1 import Client as FirestoreClient
 from google.cloud.storage import Bucket
 
+# --- Internal imports ---
 from db.session import (
     _get_or_init_app,
     get_db,
@@ -39,10 +41,10 @@ class TestGetOrInitApp:
         self, mock_cert, mock_init, mock_get_app, mock_get_settings
     ):
         """Should initialize new app if none exists."""
-        # Simulate no existing app
+        # --- Simulate no existing app ---
         mock_get_app.side_effect = ValueError("App not found")
         
-        # Mock settings
+        # --- Mock settings ---
         mock_settings = MagicMock()
         mock_settings.firebase_service_account = {
             "project_id": "test-project",
@@ -50,7 +52,7 @@ class TestGetOrInitApp:
         }
         mock_get_settings.return_value = mock_settings
         
-        # Mock return values
+        # --- Mock return values ---
         mock_cred = MagicMock()
         mock_cert.return_value = mock_cred
         mock_app = MagicMock(spec=firebase_admin.App)
@@ -110,7 +112,7 @@ class TestGetOrInitApp:
         for t in threads:
             t.join()
         
-        # All should get the same app instance
+        # --- All should get the same app instance ---
         assert all(r == mock_app for r in results)
 
 

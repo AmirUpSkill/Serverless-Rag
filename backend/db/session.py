@@ -9,6 +9,7 @@ from google.cloud.storage import Bucket
 
 from core.config import get_settings
 
+# --- Thread-safe initialization lock ---
 _init_lock = threading.Lock()
 
 
@@ -18,10 +19,10 @@ def _get_or_init_app() -> firebase_admin.App:
     
     with _init_lock:
         try:
-            # Try to get the existing default app
+            # --- Try to get the existing default app ---
             return firebase_admin.get_app()
         except ValueError:
-            # App doesn't exist, initialize it
+            # --- App doesn't exist, initialize it ---
             try:
                 service_account = settings.firebase_service_account
                 cred = credentials.Certificate(service_account)

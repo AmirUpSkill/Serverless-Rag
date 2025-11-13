@@ -1,9 +1,11 @@
 """Unit tests for models.file module."""
 from datetime import datetime
 
+# --- Third-party imports ---
 import pytest
 from pydantic import ValidationError
 
+# --- Internal imports ---
 from models.file import (
     ALLOWED_FILE_TYPES,
     MAX_FILE_SIZE_BYTES,
@@ -40,7 +42,7 @@ class TestFileMetadataCreate:
         """Should convert file type to lowercase."""
         file_meta = FileMetadataCreate(
             name="test.pdf",
-            type="PDF",  # Uppercase
+            type="PDF",  # --- Uppercase ---
             size_bytes=1000,
             storage_path="files/test.pdf",
             gemini_file_search_store_name="store123"
@@ -53,7 +55,7 @@ class TestFileMetadataCreate:
         with pytest.raises(ValidationError) as exc_info:
             FileMetadataCreate(
                 name="test.exe",
-                type="exe",  # Not in ALLOWED_FILE_TYPES
+                type="exe",  # --- Not in ALLOWED_FILE_TYPES ---
                 size_bytes=1000,
                 storage_path="files/test.exe",
                 gemini_file_search_store_name="store123"
@@ -70,10 +72,10 @@ class TestFileMetadataCreate:
                 size_bytes=1000,
                 storage_path="files/test.pdf",
                 gemini_file_search_store_name="store123",
-                keywords=["k1", "k2", "k3", "k4", "k5", "k6", "k7"]  # 7 keywords
+                keywords=["k1", "k2", "k3", "k4", "k5", "k6", "k7"]  # --- 7 keywords ---
             )
         
-        # Check error contains keywords field validation
+        # --- Check error contains keywords field validation ---
         error_str = str(exc_info.value)
         assert "keywords" in error_str.lower() and ("6" in error_str or "maximum" in error_str.lower())
     
@@ -147,7 +149,7 @@ class TestFileMetadataCreate:
     
     def test_size_bytes_validation(self):
         """Should validate file size constraints."""
-        # Size must be > 0
+        # --- Size must be > 0 ---
         with pytest.raises(ValidationError):
             FileMetadataCreate(
                 name="test.pdf",
@@ -157,7 +159,7 @@ class TestFileMetadataCreate:
                 gemini_file_search_store_name="store123"
             )
         
-        # Size must be <= MAX_FILE_SIZE_BYTES
+        # --- Size must be <= MAX_FILE_SIZE_BYTES ---
         with pytest.raises(ValidationError):
             FileMetadataCreate(
                 name="test.pdf",
@@ -169,7 +171,7 @@ class TestFileMetadataCreate:
     
     def test_name_length_validation(self):
         """Should validate name length."""
-        # Name cannot be empty
+        # --- Name cannot be empty ---
         with pytest.raises(ValidationError):
             FileMetadataCreate(
                 name="",
@@ -179,7 +181,7 @@ class TestFileMetadataCreate:
                 gemini_file_search_store_name="store123"
             )
         
-        # Name cannot exceed 255 chars
+        # --- Name cannot exceed 255 chars ---
         with pytest.raises(ValidationError):
             FileMetadataCreate(
                 name="a" * 256,
@@ -239,7 +241,7 @@ class TestFileMetadata:
         
         result = file_meta.to_dict()
         
-        assert "id" not in result  # Excluded by default
+        assert "id" not in result  # --- Excluded by default ---
         assert result["name"] == "test.pdf"
         assert result["type"] == "pdf"
         assert result["keywords"] == ["test"]
@@ -267,7 +269,7 @@ class TestFileMetadataResponse:
     
     def test_from_attributes_config(self):
         """Should support from_attributes for ORM-like conversion."""
-        # Create a mock object with attributes
+        # --- Create a mock object with attributes ---
         class MockFile:
             id = "file123"
             name = "test.pdf"
