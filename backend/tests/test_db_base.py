@@ -2,9 +2,11 @@
 from datetime import datetime
 from unittest.mock import MagicMock
 
+# --- Third-party imports ---
 import pytest
 from google.cloud import firestore as gcf
 
+# --- Internal imports ---
 from db.base import FirestoreDocument
 
 
@@ -166,4 +168,4 @@ class TestFirestoreDocumentSubclass:
     def test_subclass_validation(self):
         """Should validate required fields in subclass."""
         with pytest.raises(ValueError):
-            ConcreteDocument(id="test123")  # Missing required 'name' field
+            ConcreteDocument(id="test123")  # --- Missing required 'name' field ---

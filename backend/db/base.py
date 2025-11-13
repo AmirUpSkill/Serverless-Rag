@@ -2,7 +2,10 @@
 from datetime import datetime
 from typing import Any
 
+# --- Firebase imports ---
 from google.cloud import firestore as gcf
+
+# --- Pydantic imports ---
 from pydantic import BaseModel, ConfigDict
 
 

@@ -1,14 +1,16 @@
 """File metadata models for Firestore."""
 from datetime import datetime
 
+# --- Pydantic imports ---
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+# --- Internal imports ---
 from db.base import FirestoreDocument
 
-# Allowed file types
+# --- Allowed file types ---
 ALLOWED_FILE_TYPES = {"pdf", "docx", "doc", "txt", "md", "csv", "xlsx", "xls"}
 
-# Max file size: 100 MB (as per Gemini File Search limits)
+# --- Max file size: 100 MB (as per Gemini File Search limits) ---
 MAX_FILE_SIZE_BYTES = 100 * 1024 * 1024
 
 
@@ -20,7 +22,7 @@ class FileMetadataCreate(BaseModel):
     size_bytes: int = Field(..., gt=0, le=MAX_FILE_SIZE_BYTES)
     storage_path: str = Field(..., min_length=1, description="Firebase Storage path")
     
-    # Gemini File Search linkage
+    # --- Gemini File Search linkage ---
     gemini_file_search_store_name: str = Field(
         ..., 
         description="Full resource name of the Gemini File Search store"
@@ -34,7 +36,7 @@ class FileMetadataCreate(BaseModel):
         description="Gemini operation name for async import tracking"
     )
     
-    # AI-generated content
+    # --- AI-generated content ---
     summary: str | None = Field(None, max_length=500, description="AI summary (3 lines max)")
     keywords: list[str] = Field(default_factory=list, max_length=6)
     
@@ -98,7 +100,7 @@ class FileMetadata(FirestoreDocument, FileMetadataCreate):
     FileMetadataCreate (for file-specific fields).
     """
     
-    # Override to make these fields explicit
+    # --- Override to make these fields explicit ---
     id: str | None = None
     created_at: datetime | None = None
     updated_at: datetime | None = None
