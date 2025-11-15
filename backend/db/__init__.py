@@ -1,4 +1,6 @@
-"""Database layer public API."""
+"""
+    Database layer public API.
+"""
 from .base import FirestoreDocument
 from .session import (
     get_db,
