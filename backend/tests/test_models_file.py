@@ -13,6 +13,7 @@ from models.file import (
     FileMetadata,
     FileMetadataCreate,
     FileMetadataResponse,
+    Pagination,
 )
 
 
@@ -305,18 +306,18 @@ class TestFileListResponse:
             for i in range(3)
         ]
         
-        pagination = {
-            "page": 1,
-            "page_size": 12,
-            "total_pages": 1,
-            "total_files": 3
-        }
+        pagination = Pagination(
+            page=1,
+            page_size=12,
+            total_pages=1,
+            total_files=3
+        )
         
         response = FileListResponse(files=files, pagination=pagination)
         
         assert len(response.files) == 3
-        assert response.pagination["page"] == 1
-        assert response.pagination["total_files"] == 3
+        assert response.pagination.page == 1
+        assert response.pagination.total_files == 3
 
 
 class TestConstants:
