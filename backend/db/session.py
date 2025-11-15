@@ -1,4 +1,3 @@
-"""Firebase Admin SDK initialization and client factories."""
 import threading
 from typing import Generator
 
@@ -14,7 +13,9 @@ _init_lock = threading.Lock()
 
 
 def _get_or_init_app() -> firebase_admin.App:
-    """Get existing Firebase app or initialize a new one (idempotent)."""
+    """
+        Get existing Firebase app or initialize a new one (idempotent).
+    """
     settings = get_settings()
     
     with _init_lock:
@@ -36,7 +37,8 @@ def _get_or_init_app() -> firebase_admin.App:
 
 
 def get_firestore_client() -> FirestoreClient:
-    """Get Firestore client instance.
+    """
+        Get Firestore client instance.
     
     Returns:
         FirestoreClient: Initialized Firestore client.
@@ -49,7 +51,8 @@ def get_firestore_client() -> FirestoreClient:
 
 
 def get_storage_bucket() -> Bucket:
-    """Get Firebase Storage bucket instance.
+    """
+        Get Firebase Storage bucket instance.
     
     Returns:
         Bucket: Default storage bucket.
@@ -62,7 +65,8 @@ def get_storage_bucket() -> Bucket:
 
 
 def get_db() -> Generator[FirestoreClient, None, None]:
-    """FastAPI dependency to inject Firestore client into endpoints.
+    """
+        FastAPI dependency to inject Firestore client into endpoints.
     
     Yields:
         FirestoreClient: Firestore client instance.
@@ -71,7 +75,8 @@ def get_db() -> Generator[FirestoreClient, None, None]:
 
 
 def make_signed_url(blob_path: str, expires_in_seconds: int = 3600) -> str:
-    """Generate a signed URL for a storage blob.
+    """
+        Generate a signed URL for a storage blob.
     
     Args:
         blob_path: Path to the blob in storage (e.g., 'files/user123/doc.pdf')

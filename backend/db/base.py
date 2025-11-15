@@ -27,7 +27,8 @@ class FirestoreDocument(BaseModel):
     )
     
     def to_dict(self, exclude_id: bool = True) -> dict[str, Any]:
-        """Convert model to Firestore-ready dict.
+        """
+            Convert model to Firestore-ready dict.
         
         Args:
             exclude_id: Whether to exclude the id field (default: True)
@@ -44,7 +45,8 @@ class FirestoreDocument(BaseModel):
     
     @classmethod
     def from_doc(cls, doc) -> "FirestoreDocument":
-        """Create model instance from Firestore DocumentSnapshot.
+        """
+            Create model instance from Firestore DocumentSnapshot.
         
         Args:
             doc: Firestore DocumentSnapshot object
@@ -58,7 +60,8 @@ class FirestoreDocument(BaseModel):
     
     @staticmethod
     def server_timestamp() -> Any:
-        """Get Firestore SERVER_TIMESTAMP sentinel.
+        """
+            Get Firestore SERVER_TIMESTAMP sentinel.
         
         Use this when setting created_at or updated_at fields:
             data["created_at"] = FirestoreDocument.server_timestamp()
