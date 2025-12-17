@@ -1,5 +1,6 @@
 from fastapi import HTTPException
 from schemas.chat import ChatResponse
+from services.gemini_service import GeminiService
 from services.service_base import ServiceBase
 
 FILES_COLLECTION = "files"
@@ -13,6 +14,7 @@ class ChatService(ServiceBase):
     def __init__(self, settings):
         super().__init__(settings)
         self.collection = self.firestore_client.collection(FILES_COLLECTION)
+        self.gemini_service = GeminiService(settings)
 
     async def chat_with_file(self, file_id: str, message: str) -> ChatResponse:
         """
@@ -33,24 +35,17 @@ class ChatService(ServiceBase):
 
         # --- Call Gemini with File Search configured ---
         try:
-            response = self.gemini_client.models.generate_content(
-                model=self.settings.gemini_model,
-                contents=message,
-                config={
-                    "tools": [
-                        {
-                            "file_search": {
-                                "file_search_store_names": [store_name]
-                            }
-                        }
-                    ]
-                },
+            response_text = await self.gemini_service.chat_with_store(
+                store_name=store_name,
+                message=message
             )
-            if not response.text:
+            
+            if not response_text:
                 raise HTTPException(
                     status_code=500, detail="AI generated no response"
                 )
-            return ChatResponse(response=response.text)
+            
+            return ChatResponse(response=response_text)
         except HTTPException:
             raise
         except Exception as e:

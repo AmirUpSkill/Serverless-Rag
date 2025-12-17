@@ -1,4 +1,3 @@
-"""Base Firestore document model."""
 from datetime import datetime
 from typing import Any
 

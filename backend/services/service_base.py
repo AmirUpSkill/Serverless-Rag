@@ -7,7 +7,7 @@ from fastapi import UploadFile, HTTPException, status
 from google import genai
 
 from core.config import Settings
-from db.session import get_firestore_client, get_storage_bucket
+from db.session import get_firestore_client
 
 # --- Constants ---
 ALLOWED_FILE_TYPES = {
@@ -36,7 +36,7 @@ class ServiceBase(ABC):
             api_key=settings.gemini_api_key.get_secret_value()
         )
         self.firestore_client = get_firestore_client()
-        self.storage_bucket = get_storage_bucket()
+        # Note: Object storage (MinIO) is initialized per-service as needed
 
     async def validate_file(self, file: UploadFile) -> Tuple[str, int]:
         """

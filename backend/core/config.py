@@ -15,6 +15,17 @@ class Settings(BaseSettings):
     # --- Firebase ---
     firebase_service_account_base64: SecretStr
 
+    # --- Object Storage (MinIO / S3-compatible) ---
+    # Used for storing raw file contents. Defaults are suitable for local MinIO
+    # running via docker-compose.
+    minio_endpoint: str = "localhost:9000"
+    minio_access_key: str = "minioadmin"
+    minio_secret_key: SecretStr = SecretStr("minioadmin123")
+    minio_bucket: str = "servless-rag"
+    minio_use_ssl: bool = False
+    # Optional public base URL for generating file URLs, e.g. "http://localhost:9000"
+    minio_public_url: str | None = None
+
     # --- Server ---
     host: str = "0.0.0.0"
     port: int = 8000
