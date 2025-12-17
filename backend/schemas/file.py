@@ -44,7 +44,9 @@ class FileResponse(BaseModel):
 
 
 class Pagination(BaseModel):
-    """Pagination metadata for list endpoints."""
+    """
+        Pagination metadata for list endpoints.
+    """
 
     page: int = Field(..., ge=1, description="Current page number.")
     page_size: int = Field(..., ge=1, description="Number of items per page.")
@@ -64,7 +66,8 @@ class Pagination(BaseModel):
 
 
 class FileListResponse(BaseModel):
-    """Schema for a paginated list of files in API responses."""
+    """
+        Schema for a paginated list of files in API responses."""
 
     files: list[FileResponse]
     pagination: Pagination = Field(..., description="Pagination metadata.")
